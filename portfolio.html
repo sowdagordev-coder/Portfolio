@@ -1,0 +1,603 @@
+<!-- ...existing code... -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MD SHAFAYAT SOWDAGOR — Front-End Developer</title>
+    <meta
+      name="description"
+      content="Portfolio of MD SHAFAYAT SOWDAGOR - Front-End Developer specializing in Webflow and responsive web development"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: { extend: { colors: { brand: "#0ea5a4" } } },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: Inter, system-ui, sans-serif;
+      }
+
+      /* Advanced transition styles */
+      :root {
+        --reveal-duration: 700ms;
+        --reveal-ease: cubic-bezier(0.2, 0.9, 0.2, 1);
+        --card-ease: cubic-bezier(0.16, 0.84, 0.33, 1);
+      }
+
+      /* Respect reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .reveal,
+        .project-card,
+        .nav-underline,
+        .hero-parallax {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+
+      /* Reveal animations (used with IntersectionObserver) */
+      .reveal {
+        opacity: 0;
+        transform: translateY(18px) scale(0.996);
+        transition: opacity var(--reveal-duration) ease,
+          transform var(--reveal-duration) var(--reveal-ease);
+        will-change: opacity, transform;
+      }
+      .reveal.revealed {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* Project card hover / tilt */
+      .project-card {
+        transform: translateZ(0);
+        transition: transform 420ms var(--card-ease),
+          box-shadow 420ms var(--card-ease);
+        will-change: transform;
+        perspective: 1200px;
+      }
+      .project-card .project-card-inner {
+        transform-origin: center center;
+        transition: transform 420ms var(--card-ease);
+        will-change: transform;
+      }
+      .project-card:hover {
+        box-shadow: 0 18px 40px rgba(2, 6, 23, 0.18);
+      }
+
+      /* Subtle image parallax wrapper */
+      .hero-parallax {
+        will-change: transform;
+        transition: transform 400ms var(--card-ease);
+      }
+
+      /* Nav link underline animation */
+      .nav-link {
+        position: relative;
+        display: inline-block;
+      }
+      .nav-link .nav-underline {
+        position: absolute;
+        left: 0;
+        bottom: -3px;
+        height: 2px;
+        width: 0%;
+        background: linear-gradient(
+          90deg,
+          var(--tw-color-brand, #0ea5a4),
+          #06b6d4
+        );
+        transition: width 260ms var(--card-ease);
+      }
+      .nav-link:hover .nav-underline,
+      .nav-link:focus .nav-underline,
+      .nav-link.active .nav-underline {
+        width: 100%;
+      }
+
+      /* Small focus-visible improvement */
+      .focus-ring:focus {
+        outline: 3px solid rgba(14, 165, 164, 0.16);
+        outline-offset: 2px;
+      }
+    </style>
+  </head>
+  <body
+    class="antialiased bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-100"
+  >
+    <!-- Navigation -->
+    <header
+      class="fixed w-full backdrop-blur bg-white/60 dark:bg-black/50 z-30"
+    >
+      <div class="max-w-6xl mx-auto px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <a href="#hero" class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl overflow-hidden shadow-md">
+              <img
+                src="https://ucarecdn.com/f866b801-1e18-4286-ad91-193a02359735/22.JPG"
+                alt=""
+              />
+            </div>
+            <div class="hidden sm:block">
+              <div class="text-sm font-semibold">MD SHAFAYAT SOWDAGOR</div>
+              <div class="text-xs text-gray-600 dark:text-gray-300">
+                Front-End Developer
+              </div>
+            </div>
+          </a>
+
+          <nav class="hidden md:flex items-center gap-6 text-sm">
+            <a href="#about" class="nav-link hover:text-brand"
+              ><span>About</span><span class="nav-underline"></span
+            ></a>
+
+            <a href="#projects" class="nav-link hover:text-brand"
+              ><span>Projects</span><span class="nav-underline"></span
+            ></a>
+            <a href="#contact" class="nav-link hover:text-brand"
+              ><span>Contact</span><span class="nav-underline"></span
+            ></a>
+            <button
+              id="themeToggle"
+              class="p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 focus-ring"
+              aria-label="Toggle theme"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
+            </button>
+          </nav>
+
+          <!-- Mobile menu button -->
+          <div class="md:hidden">
+            <button
+              id="mobileMenuBtn"
+              class="p-2 focus-ring"
+              aria-label="Toggle menu"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- mobile menu panel (kept hidden by default) -->
+      <div
+        id="mobileMenu"
+        class="hidden md:hidden border-t border-gray-200 dark:border-gray-800"
+      >
+        <div class="px-6 py-4 flex flex-col gap-3">
+          <a href="#about" class="block">About</a>
+
+          <a href="#projects" class="block">Projects</a>
+          <a href="#contact" class="block">Contact</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-16">
+      <!-- Hero Section -->
+      <section id="about" class="min-h-screen flex items-center">
+        <div class="max-w-6xl mx-auto px-6 lg:px-8 py-16">
+          <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="reveal">
+              <h1
+                class="text-4xl sm:text-5xl font-extrabold leading-tight mb-6"
+              >
+                MD SHAFAYAT SOWDAGOR
+                <span class="block text-brand mt-2">Front-End Developer</span>
+              </h1>
+              <p class="text-lg text-gray-600 dark:text-gray-300">
+                I’m a Front-End Developer dedicated to crafting clean, scalable,
+                and responsive web experiences. With a focus on Webflow and
+                modern JavaScript frameworks, I bridge design and technology to
+                deliver visually engaging, high-performance websites.
+              </p>
+              <div class="mt-8 flex flex-wrap gap-4">
+                <a
+                  href="#contact"
+                  class="px-6 py-3 bg-brand text-white rounded-lg hover:opacity-90 focus-ring"
+                >
+                  Get in touch
+                </a>
+                <a
+                  href="#projects"
+                  class="px-6 py-3 border border-gray-300 dark:border-gray-700 rounded-lg hover:border-brand focus-ring"
+                >
+                  View Projects
+                </a>
+              </div>
+            </div>
+            <div class="relative reveal" style="--delay: 120ms">
+              <div class="hero-parallax">
+                <img
+                  src="https://ucarecdn.com/2c9b93bb-344b-4dc9-939d-7031b43abfd5/476616070_3026134680867057_240063971058640018_n.jpg"
+                  alt="MD SHAFAYAT SOWDAGOR"
+                  class="rounded-2xl shadow-xl"
+                  id="heroImage"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Section -->
+      <section id="projects" class="py-20 bg-white dark:bg-gray-800">
+        <div class="max-w-6xl mx-auto px-6 lg:px-8">
+          <h2 class="text-3xl font-bold mb-12 reveal">Featured Projects</h2>
+          <div class="grid md:grid-cols-2 gap-8">
+            <!-- Ideated Lab -->
+            <article
+              class="project-card reveal bg-gray-50 dark:bg-gray-700 rounded-xl overflow-hidden"
+              data-tilt
+            >
+              <div class="project-card-inner p-6">
+                <h3 class="text-xl font-semibold mb-2">Ideated Lab</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                  Modern business website with responsive design and smooth
+                  animations
+                </p>
+                <a
+                  href="https://www.ideatedlab.com/"
+                  target="_blank"
+                  class="text-brand hover:underline"
+                >
+                  View Live Project →
+                </a>
+              </div>
+            </article>
+
+            <!-- HR SaaS Landing -->
+            <article
+              class="project-card reveal bg-gray-50 dark:bg-gray-700 rounded-xl overflow-hidden"
+              data-tilt
+            >
+              <div class="project-card-inner p-6">
+                <h3 class="text-xl font-semibold mb-2">HR SaaS Landing</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                  This is a responsive, conversion-focused Webflow one-pager for
+                  HR SaaS products, built with modular sections, clean UI, and
+                  mobile-first structure. Ideal for platforms offering HR tools,
+                  onboarding software, or employee management systems. Includes
+                  hero, features, use cases, testimonials, pricing, and CTA
+                  blocks — all fully editable and client-ready.
+                </p>
+                <a
+                  href="http://hr-saas-landing.webflow.io/"
+                  target="_blank"
+                  class="text-brand hover:underline"
+                >
+                  View Live Project →
+                </a>
+              </div>
+            </article>
+
+            <!-- Yoga Hava Template -->
+            <article
+              class="project-card reveal bg-gray-50 dark:bg-gray-700 rounded-xl overflow-hidden"
+              data-tilt
+            >
+              <div class="project-card-inner p-6">
+                <h3 class="text-xl font-semibold mb-2">Yoga Hava</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                  Launch a high-converting modern yoga studio website with Yoga
+                  Hava. Mobile-first, SEO-friendly Webflow template for
+                  bookings, memberships & wellness services.
+                </p>
+                <a
+                  href="http://yogahavatemplate.webflow.io/"
+                  target="_blank"
+                  class="text-brand hover:underline"
+                >
+                  View Live Project →
+                </a>
+              </div>
+            </article>
+
+            <!-- Asset Finder -->
+            <article
+              class="project-card reveal bg-gray-50 dark:bg-gray-700 rounded-xl overflow-hidden"
+              data-tilt
+            >
+              <div class="project-card-inner p-6">
+                <h3 class="text-xl font-semibold mb-2">Asset Finder</h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                  Real estate platform with property search functionality
+                </p>
+                <a
+                  href="http://assetfinder-real-estate.webflow.io/"
+                  target="_blank"
+                  class="text-brand hover:underline"
+                >
+                  View Live Project →
+                </a>
+              </div>
+            </article>
+            <article
+              class="project-card reveal bg-gray-50 dark:bg-gray-700 rounded-xl overflow-hidden"
+              data-tilt
+            >
+              <div class="project-card-inner p-6">
+                <h3 class="text-xl font-semibold mb-2">
+                  Personal-Portfolio Website
+                </h3>
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                  A clean, minimal & modern responsive personal portfolio
+                  website built in Webflow — designed for UX/UI designers,
+                  freelancers, no-code creators, and developers looking to
+                  showcase their work with clarity and style.
+                </p>
+                <a
+                  href="http://minimal-personal-portfolio-website.webflow.io/"
+                  target="_blank"
+                  class="text-brand hover:underline"
+                >
+                  View Live Project →
+                </a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="py-20">
+        <div class="max-w-4xl mx-auto px-6 lg:px-8">
+          <h2 class="text-3xl font-bold mb-8 reveal">Get in Touch</h2>
+          <div
+            class="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg reveal"
+          >
+            <form class="space-y-6">
+              <div>
+                <label class="block text-sm font-medium mb-2">Name</label>
+                <input
+                  type="text"
+                  required
+                  class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">Email</label>
+                <input
+                  type="email"
+                  required
+                  class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700"
+                />
+              </div>
+              <div>
+                <label class="block text-sm font-medium mb-2">Message</label>
+                <textarea
+                  required
+                  rows="4"
+                  class="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700"
+                ></textarea>
+              </div>
+              <button
+                type="submit"
+                class="w-full px-6 py-3 bg-brand text-white rounded-lg hover:opacity-90 focus-ring"
+              >
+                Send Message
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 dark:bg-gray-800 py-12">
+      <div class="max-w-6xl mx-auto px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+          <div class="text-center md:text-left mb-6 md:mb-0">
+            <h3 class="font-bold text-xl mb-2">MD SHAFAYAT SOWDAGOR</h3>
+            <p class="text-gray-600 dark:text-gray-300">Front-End Developer</p>
+          </div>
+          <div class="flex gap-6">
+            <a
+              href="https://www.linkedin.com/in/shafayat-sowdagor-52b519397/"
+              class="text-gray-600 dark:text-gray-300 hover:text-brand"
+              >LinkedIn</a
+            >
+            <a
+              href="#"
+              class="text-gray-600 dark:text-gray-300 hover:text-brand"
+              >GitHub</a
+            >
+            <a
+              href="#"
+              class="text-gray-600 dark:text-gray-300 hover:text-brand"
+              >Twitter</a
+            >
+          </div>
+        </div>
+        <div
+          class="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700 text-center text-sm text-gray-600 dark:text-gray-300"
+        >
+          © <span id="year"></span> MD SHAFAYAT SOWDAGOR. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Respect reduced motion
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      // Theme toggle
+      const themeToggle = document.getElementById("themeToggle");
+      if (
+        localStorage.theme === "dark" ||
+        (!("theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      }
+      themeToggle?.addEventListener("click", () => {
+        document.documentElement.classList.toggle("dark");
+        localStorage.theme = document.documentElement.classList.contains("dark")
+          ? "dark"
+          : "light";
+      });
+
+      // Mobile menu
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const mobileMenu = document.getElementById("mobileMenu");
+      mobileMenuBtn?.addEventListener("click", () => {
+        mobileMenu?.classList.toggle("hidden");
+      });
+
+      // Current year
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // Smooth scroll
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          const href = this.getAttribute("href");
+          if (href && href.length > 1) {
+            e.preventDefault();
+            document.querySelector(href)?.scrollIntoView({
+              behavior: reduceMotion ? "auto" : "smooth",
+            });
+            // close mobile menu when link clicked
+            if (mobileMenu && !mobileMenu.classList.contains("hidden")) {
+              mobileMenu.classList.add("hidden");
+            }
+          }
+        });
+      });
+
+      // IntersectionObserver reveal
+      (function () {
+        if (reduceMotion) {
+          document
+            .querySelectorAll(".reveal")
+            .forEach((el) => el.classList.add("revealed"));
+          return;
+        }
+        const revealElements = document.querySelectorAll(".reveal");
+        const io = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("revealed");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12 }
+        );
+        revealElements.forEach((el, i) => {
+          el.style.transitionDelay = i * 60 + "ms";
+          io.observe(el);
+        });
+      })();
+
+      // Parallax hero image (subtle)
+      (function () {
+        const heroImageWrap = document.querySelector(".hero-parallax");
+        if (!heroImageWrap || reduceMotion) return;
+        let lastY = window.scrollY;
+        let ticking = false;
+        function update() {
+          const rect = heroImageWrap.getBoundingClientRect();
+          const center = rect.top + rect.height / 2;
+          const windowCenter = window.innerHeight / 2;
+          const offset = (windowCenter - center) * 0.06; // small parallax
+          heroImageWrap.style.transform = `translateY(${offset}px)`;
+          ticking = false;
+        }
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (!ticking) {
+              window.requestAnimationFrame(update);
+              ticking = true;
+            }
+          },
+          { passive: true }
+        );
+        // initial
+        update();
+      })();
+
+      // Pointer tilt for project cards
+      (function () {
+        if (reduceMotion) return;
+        const cards = document.querySelectorAll("[data-tilt]");
+        cards.forEach((card) => {
+          const inner = card.querySelector(".project-card-inner") || card;
+          let width = 0,
+            height = 0,
+            left = 0,
+            top = 0;
+          let raf = null;
+
+          function handlePointerMove(e) {
+            const rect = card.getBoundingClientRect();
+            width = rect.width;
+            height = rect.height;
+            left = rect.left;
+            top = rect.top;
+            const x = (e.clientX - left) / width;
+            const y = (e.clientY - top) / height;
+            const rotateY = (x - 0.5) * 10; // degrees
+            const rotateX = (0.5 - y) * 8;
+            const translateZ = 8;
+            // throttle via rAF
+            if (raf) cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(() => {
+              inner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(${translateZ}px)`;
+            });
+          }
+
+          function handlePointerLeave() {
+            if (raf) cancelAnimationFrame(raf);
+            inner.style.transform = `rotateX(0deg) rotateY(0deg) translateZ(0)`;
+          }
+
+          card.addEventListener("pointermove", handlePointerMove);
+          card.addEventListener("pointerleave", handlePointerLeave);
+          card.addEventListener("pointercancel", handlePointerLeave);
+        });
+      })();
+    </script>
+  </body>
+</html>
+<!-- ...existing code... -->
